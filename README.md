@@ -14,7 +14,10 @@ p2p db functions for chat
 
 -   [Mesh](#mesh)
     -   [onconnection](#onconnection)
+    -   [joinChannel](#joinchannel)
+    -   [createReadStream](#createreadstream)
     -   [message](#message)
+    -   [replicate](#replicate)
 
 ### Mesh
 
@@ -37,6 +40,22 @@ of visible users.
 
 -   `peer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The discovery-swarm peer emitted from the 'connection' or 'disconnection' event
 
+#### joinChannel
+
+Join a channel.
+
+**Parameters**
+
+-   `channel` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The channel to join.
+
+#### createReadStream
+
+Create a readable stream for the mesh.
+
+**Parameters**
+
+-   `channel` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The channel you want to read from.
+
 #### message
 
 Create a message.
@@ -46,3 +65,8 @@ Create a message.
 -   `message` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The message to write.
 -   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options: date, username
 -   `done` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** When message has been successfully added.
+
+#### replicate
+
+Replication stream for the mesh. Shares the username with the
+other peers it is connecting with.

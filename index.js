@@ -1,4 +1,5 @@
 var hyperdb = require('hyperdb')
+var pump = require('pump')
 var strftime = require('strftime')
 var randomBytes = require('crypto').randomBytes
 var events = require('events')
@@ -46,6 +47,7 @@ function Mesh (storage, href, opts) {
     ? hyperdb(storage, self.addr, {valueEncoding: json})
     : hyperdb(storage, {valueEncoding: json})
 
+  self.channels = {}
   self.users = {}
   self.users[opts.username] = new Date()
 }
@@ -83,6 +85,31 @@ Mesh.prototype.onconnection = function (peer) {
     })
   }
 }
+
+/**
+ * Join a channel.
+ * @param {String} channel - The channel to join.
+ */
+Mesh.prototype.joinChannel = function (channel) {
+  this.channels[channel] = true
+}
+
+/**
+ * Leave a channel.
+ * @param {String} channel - The channel to leave.
+ */
+Mesh.prototype.leaveChannel = function (channel) {
+  delete this.channels[channel]
+}
+
+/**
+ * Create a readable stream for the mesh.
+ * @param {String} channel - The channel you want to read from.
+ */
+Mesh.prototype.createReadStream = function (channel) {
+  return this.db.createHistoryStream()
+}
+
 
 /**
  * Create a message.
