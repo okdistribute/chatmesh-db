@@ -4,7 +4,8 @@
   "description": " p2p db functions for chat ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "documentation readme index.js --section=API"
   },
   "repository": {
     "type": "git",
@@ -28,5 +29,8 @@
     "discovery-swarm": "^5.1.1",
     "hyperdb": "^3.0.0-3",
     "strftime": "^0.10.0"
+  },
+  "devDependencies": {
+    "documentation": "^6.3.2"
   }
 }
