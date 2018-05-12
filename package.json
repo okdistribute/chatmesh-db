@@ -31,6 +31,8 @@
     "strftime": "^0.10.0"
   },
   "devDependencies": {
-    "documentation": "^6.3.2"
+    "documentation": "^6.3.2",
+    "random-access-memory": "^3.0.0",
+    "tape": "^4.9.0"
   }
 }
