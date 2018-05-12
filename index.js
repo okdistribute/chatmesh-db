@@ -2,6 +2,7 @@ var hyperdb = require('hyperdb')
 var strftime = require('strftime')
 var randomBytes = require('crypto').randomBytes
 var events = require('events')
+var encoding = require('dat-encoding')
 var inherits = require('inherits')
 var swarm = require('./swarm')
 
@@ -35,8 +36,12 @@ function Mesh (storage, href, opts) {
 
   self.username = opts.username || 'anonymous'
 
-  self.addr = /^dat:/.test(href)
-    ? Buffer(href.replace(/^dat:\/*/,''),'hex') : null
+  try {
+    var key = encoding.decode(href)
+    self.addr = encoding.encode(key)
+  } catch (e) {
+    self.addr = null
+  }
   self.db = self.addr
     ? hyperdb(storage, self.addr, {valueEncoding: json})
     : hyperdb(storage, {valueEncoding: json})
