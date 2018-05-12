@@ -103,6 +103,10 @@ Mesh.prototype.message = function (message, opts, done) {
   self.db.put(key, {username, message}, done)
 }
 
+/**
+ * Replication stream for the mesh. Shares the username with the
+ * other peers it is connecting with.
+ */
 Mesh.prototype.replicate = function () {
   var self = this
   return this.db.replicate({
