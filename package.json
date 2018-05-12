@@ -1,0 +1,32 @@
+{
+  "name": "chatmesh-db",
+  "version": "1.0.0",
+  "description": " p2p db functions for chat ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karissa/chatmesh-db.git"
+  },
+  "keywords": [
+    "chatmesh",
+    "chat",
+    "p2p",
+    "hyperdb"
+  ],
+  "author": "Karissa McKelvey",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/karissa/chatmesh-db/issues"
+  },
+  "homepage": "https://github.com/karissa/chatmesh-db#readme",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "dat-swarm-defaults": "^1.0.1",
+    "discovery-swarm": "^5.1.1",
+    "hyperdb": "^3.0.0-3",
+    "strftime": "^0.10.0"
+  }
+}
