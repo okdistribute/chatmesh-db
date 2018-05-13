@@ -106,8 +106,9 @@ Mesh.prototype.leaveChannel = function (channel) {
  * Create a readable stream for the mesh.
  * @param {String} channel - The channel you want to read from.
  */
-Mesh.prototype.createReadStream = function (channel) {
-  return this.db.createReadStream(`${channel}`, {recursive: true})
+Mesh.prototype.createReadStream = function (channel, opts) {
+  if (!opts) opts = {}
+  return this.db.createReadStream(`${channel}`, Object.assign({recursive: true}, opts))
 }
 
 
