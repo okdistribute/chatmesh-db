@@ -15,6 +15,7 @@ p2p db functions for chat
 -   [Mesh](#mesh)
     -   [onconnection](#onconnection)
     -   [joinChannel](#joinchannel)
+    -   [leaveChannel](#leavechannel)
     -   [createReadStream](#createreadstream)
     -   [message](#message)
     -   [replicate](#replicate)
@@ -48,6 +49,14 @@ Join a channel.
 
 -   `channel` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The channel to join.
 
+#### leaveChannel
+
+Leave a channel.
+
+**Parameters**
+
+-   `channel` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The channel to leave.
+
 #### createReadStream
 
 Create a readable stream for the mesh.
@@ -62,6 +71,7 @@ Create a message.
 
 **Parameters**
 
+-   `channel` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The channel to create the message.
 -   `message` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The message to write.
 -   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options: date, username
 -   `done` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** When message has been successfully added.

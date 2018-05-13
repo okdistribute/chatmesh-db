@@ -107,27 +107,35 @@ Mesh.prototype.leaveChannel = function (channel) {
  * @param {String} channel - The channel you want to read from.
  */
 Mesh.prototype.createReadStream = function (channel) {
-  return this.db.createHistoryStream()
+  return this.db.createReadStream(`${channel}`, {recursive: true})
 }
 
 
 /**
  * Create a message.
+ * @param {String} channel - The channel to create the message.
  * @param {String} message - The message to write.
  * @param {Object} opts - Options: date, username
  * @param {function} done - When message has been successfully added.
  */
-Mesh.prototype.message = function (message, opts, done) {
-  if (typeof opts === 'function') return this.message(message, null, opts)
+Mesh.prototype.message = function (channel, message, opts, done) {
+  if (typeof opts === 'function') return this.message(channel, message, null, opts)
   if (!opts) opts = {}
   var self = this
   if (!message) return done()
   var d = opts.date || new Date
   var username = opts.username || self.username
-  var utcDate = new Date(d.valueOf() + d.getTimezoneOffset()*60*1000)
-  var now = strftime('%F %T', utcDate)
-  var key = 'chat/' + now + '@' + randomBytes(8).toString('hex')
-  self.db.put(key, {username, message}, done)
+  self.db.get(`${channel}/latest`, function (err, node) {
+    if (err) node = {value: 0}
+    var latest = parseInt(node.value)
+    var newLatest = latest + 1
+    var key = `${channel}/newLatest`
+    var utcDate = new Date(d.valueOf() + d.getTimezoneOffset()*60*1000)
+    var date = strftime('%F %T', utcDate)
+    self.db.put(key, {username, date, message}, function () {
+      self.db.put(`${channel}/latest`, newLatest, done)
+    })
+  })
 }
 
 /**
