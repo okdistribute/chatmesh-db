@@ -1,13 +1,10 @@
 var hyperdb = require('hyperdb')
-var pump = require('pump')
 var strftime = require('strftime')
-var randomBytes = require('crypto').randomBytes
 var events = require('events')
 var encoding = require('dat-encoding')
 var inherits = require('inherits')
-var swarm = require('./swarm')
 
-module.exports =  Mesh
+module.exports = Mesh
 
 /**
  * Create a new Chatmesh. This is the object handling all
