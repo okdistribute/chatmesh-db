@@ -105,9 +105,21 @@ Mesh.prototype.leaveChannel = function (channel) {
  */
 Mesh.prototype.createReadStream = function (channel, opts) {
   if (!opts) opts = {}
-  return this.db.createReadStream(`${channel}`, Object.assign({recursive: true}, opts))
+  return this.db.createReadStream(`${channel}/messages`, Object.assign({recursive: true}, opts))
 }
 
+/**
+ * Get the metadata of channel.
+ * @param  {String}   channel Channel name
+ * @param  {Function} done    Callback
+ */
+Mesh.prototype.metadata = function (channel, done) {
+  this.db.get(`${channel}/metadata`, function (err, data) {
+    if (err) return done(err)
+    var node = (data.length ? data[0] : {latest: 0})
+    done(null, node)
+  })
+}
 
 /**
  * Create a message.
@@ -121,17 +133,18 @@ Mesh.prototype.message = function (channel, message, opts, done) {
   if (!opts) opts = {}
   var self = this
   if (!message) return done()
-  var d = opts.date || new Date
   var username = opts.username || self.username
-  self.db.get(`${channel}/latest`, function (err, node) {
-    if (err) node = {value: 0}
-    var latest = parseInt(node.value)
+  self.metadata(channel, function (err, metadata) {
+    if (err) return done(err)
+    var latest = parseInt(metadata.latest)
     var newLatest = latest + 1
-    var key = `${channel}/newLatest`
+    var key = `${channel}/messages/${newLatest}`
+    var d = opts.date || new Date
     var utcDate = new Date(d.valueOf() + d.getTimezoneOffset()*60*1000)
     var date = strftime('%F %T', utcDate)
     self.db.put(key, {username, date, message}, function () {
-      self.db.put(`${channel}/latest`, newLatest, done)
+      metadata.latest = newLatest
+      self.db.put(`${channel}/metadata`, metadata, done)
     })
   })
 }

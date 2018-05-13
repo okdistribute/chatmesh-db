@@ -10,15 +10,19 @@ test('create a chatmesh and read a channel', function (t) {
     var date = new Date
     var message = 'hi'
     var channel = '#general'
-    mesh.message(channel, message, {date}, function (err) {
+    mesh.metadata(channel, function (err, metadata) {
       t.error(err)
-      var reader = mesh.createReadStream(channel)
-      collect(reader, function (err, data) {
+      t.same(metadata.latest, 0)
+      mesh.message(channel, message, {date}, function (err) {
         t.error(err)
-        t.same(data.length, 1)
-        var msg = data[0].value
-        t.same(message, msg.message, 'same message')
-        t.end()
+        var reader = mesh.createReadStream(channel)
+        collect(reader, function (err, data) {
+          t.error(err)
+          t.same(data.length, 1)
+          var msg = data[0].value
+          t.same(message, msg.message, 'same message')
+          t.end()
+        })
       })
     })
   })
