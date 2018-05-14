@@ -1,6 +1,6 @@
 {
   "name": "chatmesh-db",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": " p2p db functions for chat ",
   "main": "index.js",
   "scripts": {
