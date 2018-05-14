@@ -116,7 +116,7 @@ Mesh.prototype.createReadStream = function (channel, opts) {
 Mesh.prototype.metadata = function (channel, done) {
   this.db.get(`${channel}/metadata`, function (err, data) {
     if (err) return done(err)
-    var node = (data.length ? data[0] : {latest: 0})
+    var node = (data.length ? data[0].value : {latest: 0})
     done(null, node)
   })
 }
@@ -139,9 +139,8 @@ Mesh.prototype.message = function (channel, message, opts, done) {
     var latest = parseInt(metadata.latest)
     var newLatest = latest + 1
     var key = `${channel}/messages/${newLatest}`
-    var d = opts.date || new Date
-    var utcDate = new Date(d.valueOf() + d.getTimezoneOffset()*60*1000)
-    var date = strftime('%F %T', utcDate)
+    var d = opts.date || new Date()
+    var date = new Date(d.valueOf() + d.getTimezoneOffset()*60*1000)
     self.db.put(key, {username, date, message}, function () {
       metadata.latest = newLatest
       self.db.put(`${channel}/metadata`, metadata, done)
